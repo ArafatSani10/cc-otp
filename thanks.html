@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thank You</title>
+  <!-- SweetAlert2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+</head>
+<body>
+
+
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    window.onload = function() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thank You!',
+        text: 'Payment was successful.',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        // Redirect to last.html after alert is closed
+        window.location.href = "last.html";
+      });
+    };
+  </script>
+</body>
+</html>
